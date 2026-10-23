@@ -1,0 +1,138 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  marketplace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Soft ceiling for a single plugin's always-on cost; override per run.
+      MAX_PLUGIN_ALWAYS_ON: "3000"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Claude Code
+        run: npm install --global @anthropic-ai/claude-code
+
+      - name: Validate manifests
+        run: |
+          set -euo pipefail
+          claude plugin validate . --strict
+          for dir in plugins/*/; do
+            echo "::group::validate $dir"
+            claude plugin validate "$dir" --strict
+            echo "::endgroup::"
+          done
+
+      - name: Check manifest consistency
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib, sys
+
+          root = pathlib.Path(".")
+          market = json.loads((root / ".claude-plugin/marketplace.json").read_text())
+          errors = []
+          seen_skills = {}
+
+          if not market.get("name") or not market.get("owner", {}).get("name"):
+              errors.append("marketplace.json: name and owner.name are required")
+
+          for entry in market.get("plugins", []):
+              name = entry.get("name")
+              source = entry.get("source", "")
+              if not name or not source:
+                  errors.append(f"entry missing name or source: {entry}")
+                  continue
+              if source.startswith("/") or ".." in source:
+                  errors.append(f"{name}: source must be a relative path inside the repo")
+              plugin_dir = (root / source).resolve()
+              if not plugin_dir.is_dir():
+                  errors.append(f"{name}: source directory missing: {source}")
+                  continue
+              manifest = plugin_dir / ".claude-plugin" / "plugin.json"
+              if not manifest.is_file():
+                  errors.append(f"{name}: missing plugin.json")
+                  continue
+              data = json.loads(manifest.read_text())
+              if data.get("name") != name:
+                  errors.append(f"{name}: plugin.json name is {data.get('name')!r}")
+              if not data.get("version"):
+                  errors.append(f"{name}: plugin.json has no version")
+              skills = sorted((plugin_dir / "skills").glob("*/SKILL.md"))
+              if not skills:
+                  errors.append(f"{name}: no skills found")
+              for skill in skills:
+                  head = skill.read_text().split("---")[1] if "---" in skill.read_text() else ""
+                  if "description:" not in head:
+                      errors.append(f"{name}/{skill.parent.name}: SKILL.md has no description")
+                  seen_skills.setdefault(skill.parent.name, []).append(name)
+
+          for skill, plugins in sorted(seen_skills.items()):
+              if len(plugins) > 1:
+                  print(f"::warning::skill {skill!r} appears in multiple plugins: {', '.join(plugins)}")
+
+          print(f"validated {len(market.get('plugins', []))} plugins, {len(seen_skills)} skills")
+          if errors:
+              print("\n".join(errors))
+              sys.exit(1)
+          PY
+
+      - name: Always-on token cost
+        run: |
+          set -euo pipefail
+          export CLAUDE_CONFIG_DIR="$(mktemp -d)"
+          claude plugin marketplace add "$PWD" >/dev/null
+
+          budget="${MAX_PLUGIN_ALWAYS_ON:-3000}"
+          total=0
+          over=0
+
+          {
+            echo "### Always-on token cost"
+            echo
+            echo "Cost added to every session once a plugin is enabled. Budget: ~${budget} per plugin."
+            echo
+            echo "| Plugin | Skills | Always-on |"
+            echo "| --- | --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          for dir in plugins/*/; do
+            name=$(basename "$dir")
+            if ! claude plugin install "${name}@jorahone-plugins" >/dev/null; then
+              echo "::error::failed to install ${name} from the marketplace"
+              exit 1
+            fi
+            details=$(claude plugin details "$name")
+            skills=$(sed -n 's/^  Skills (\([0-9]*\)).*/\1/p' <<<"$details" | head -1)
+            cost=$(sed -n 's/^  Always-on: *~\([0-9,]*\) tok.*/\1/p' <<<"$details" | head -1)
+            cost=${cost//,/}
+            skills=${skills:-0}
+            cost=${cost:-0}
+            total=$((total + cost))
+            if [ "$cost" -gt "$budget" ]; then
+              over=1
+              echo "::warning::${name} is ~${cost} always-on tokens, over the ~${budget} budget"
+            fi
+            echo "| \`${name}\` | ${skills} | ~${cost} |" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+          echo "| **total** | | **~${total}** |" >> "$GITHUB_STEP_SUMMARY"
+          echo "total always-on cost: ~${total} tokens" >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$over" -eq 1 ]; then
+            echo "::error::one or more plugins exceed the ~${budget} always-on budget"
+            exit 1
+          fi
