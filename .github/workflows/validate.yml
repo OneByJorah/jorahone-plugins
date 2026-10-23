@@ -121,6 +121,10 @@ jobs:
             cost=${cost//,/}
             skills=${skills:-0}
             cost=${cost:-0}
+            if [ "$cost" -eq 0 ]; then
+              echo "::error::could not read always-on cost for ${name}; details output changed?"
+              exit 1
+            fi
             total=$((total + cost))
             if [ "$cost" -gt "$budget" ]; then
               over=1
