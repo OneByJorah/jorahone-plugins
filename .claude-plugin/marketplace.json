@@ -1,0 +1,77 @@
+{
+  "name": "jorahone-plugins",
+  "description": "JorahOne's curated agent skills, packaged as installable Claude Code plugins.",
+  "owner": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "plugins": [
+    {
+      "name": "agent-workflow",
+      "source": "./plugins/agent-workflow",
+      "description": "Full development workflow: specs, planning, TDD, review, debugging, git, shipping, security hardening",
+      "version": "1.0.0"
+    },
+    {
+      "name": "ponytail",
+      "source": "./plugins/ponytail",
+      "description": "Lazy senior dev mode: smallest change that works, plus repo audit, debt ledger, review and usage commands",
+      "version": "1.0.0"
+    },
+    {
+      "name": "python-flask",
+      "source": "./plugins/python-flask",
+      "description": "Python and Flask backend patterns, API design and pytest strategies",
+      "version": "1.0.0"
+    },
+    {
+      "name": "docker-selfhosted",
+      "source": "./plugins/docker-selfhosted",
+      "description": "Docker Compose conventions and optimized multi-stage Dockerfiles",
+      "version": "1.0.0"
+    },
+    {
+      "name": "shell-scripting",
+      "source": "./plugins/shell-scripting",
+      "description": "Defensive bash, ShellCheck lint configuration and Bats test suites for shell scripts",
+      "version": "1.0.0"
+    },
+    {
+      "name": "frontend",
+      "source": "./plugins/frontend",
+      "description": "React/Next performance rules and web interface design guidelines",
+      "version": "1.0.0"
+    },
+    {
+      "name": "windows-admin",
+      "source": "./plugins/windows-admin",
+      "description": "PowerShell mastery plus Windows Server, IIS and Active Directory administration",
+      "version": "1.0.0"
+    },
+    {
+      "name": "security-audit",
+      "source": "./plugins/security-audit",
+      "description": "Cloudflare security audit workflow: codebase, API and daemon vulnerability review",
+      "version": "1.0.0"
+    },
+    {
+      "name": "research-focus",
+      "source": "./plugins/research-focus",
+      "description": "Deep multi-source research with verified citations, plus ADHD-shaped output mode",
+      "version": "1.0.0"
+    },
+    {
+      "name": "design",
+      "source": "./plugins/design",
+      "description": "Frontend and product design: interface critique, design taste, motion, native mobile, UI library choices",
+      "version": "1.2.0"
+    },
+    {
+      "name": "rea",
+      "source": "./plugins/rea",
+      "description": "Reverse-engineering toolkit: investigation design, analysis optimization, CI audit, changelogs",
+      "version": "1.0.0"
+    }
+  ]
+}

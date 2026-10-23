@@ -1,0 +1,11 @@
+{
+  "name": "security-audit",
+  "version": "1.0.0",
+  "description": "Cloudflare security audit workflow: codebase, API and daemon vulnerability review",
+  "author": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "license": "MIT"
+}

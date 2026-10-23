@@ -1,0 +1,11 @@
+{
+  "name": "windows-admin",
+  "version": "1.0.0",
+  "description": "PowerShell mastery plus Windows Server, IIS and Active Directory administration",
+  "author": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "license": "MIT"
+}

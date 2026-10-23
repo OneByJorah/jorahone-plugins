@@ -1,0 +1,11 @@
+{
+  "name": "agent-workflow",
+  "version": "1.0.0",
+  "description": "Full development workflow: specs, planning, TDD, review, debugging, git, shipping, security hardening",
+  "author": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "license": "MIT"
+}

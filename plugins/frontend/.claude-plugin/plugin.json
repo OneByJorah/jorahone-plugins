@@ -1,0 +1,11 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "React/Next performance rules and web interface design guidelines",
+  "author": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "license": "MIT"
+}

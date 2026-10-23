@@ -1,0 +1,11 @@
+{
+  "name": "docker-selfhosted",
+  "version": "1.0.0",
+  "description": "Docker Compose conventions and optimized multi-stage Dockerfiles",
+  "author": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "license": "MIT"
+}

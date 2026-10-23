@@ -1,0 +1,11 @@
+{
+  "name": "ponytail",
+  "version": "1.0.0",
+  "description": "Lazy senior dev mode: smallest change that works, plus repo audit, debt ledger, review and usage commands",
+  "author": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "rea",
+  "version": "1.0.0",
+  "description": "Reverse-engineering toolkit: investigation design, analysis optimization, CI audit, changelogs",
+  "author": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "license": "MIT"
+}

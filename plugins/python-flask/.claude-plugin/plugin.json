@@ -1,0 +1,11 @@
+{
+  "name": "python-flask",
+  "version": "1.0.0",
+  "description": "Python and Flask backend patterns, API design and pytest strategies",
+  "author": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "design",
+  "version": "1.2.0",
+  "description": "Frontend and product design: interface critique, design taste, motion, native mobile, UI library choices",
+  "author": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "license": "MIT"
+}

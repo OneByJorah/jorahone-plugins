@@ -1,0 +1,11 @@
+{
+  "name": "research-focus",
+  "version": "1.0.0",
+  "description": "Deep multi-source research with verified citations, plus ADHD-shaped output mode",
+  "author": {
+    "name": "Jhonattan L. Jimenez",
+    "email": "info@jorahone.com",
+    "url": "https://github.com/OneByJorah"
+  },
+  "license": "MIT"
+}
